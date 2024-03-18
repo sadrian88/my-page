@@ -20,7 +20,7 @@ pipeline {
             steps {
                 // Build the Docker image
                 script {
-                    docker.build -t mysite-deploy/dp-alpine:latest 
+                    docker.build -t mysitedeploy/14-apline
                 }
             }
         }
