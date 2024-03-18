@@ -20,7 +20,7 @@ pipeline {
             steps {
                 // Build the Docker image
                 script {
-                    docker.build -t mysitedeploy/14-apline
+                    docker.build ("my-site/14-apline")
                 }
             }
         }
