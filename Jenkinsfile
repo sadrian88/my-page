@@ -23,7 +23,7 @@ pipeline {
         }
         stage('Push') {
             steps {
-                sh 'docker push adrian21071988/my-repo/dp-alpine:latest'
+                sh 'docker push my-site/dp-alpine:latest'
             }
         }
     }
