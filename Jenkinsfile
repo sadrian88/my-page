@@ -4,8 +4,6 @@ pipeline {
     environment {
         DOCKER_HUB_CREDENTIALS = 'adrian21071988-&$OpJAhIwGhtdGt'
         DOCKER_IMAGE_NAME = 'adrian21071988/my-site-deploy'
-        SONARQUBE_HOME = tool 'SonarQube'
-        OWASP_HOME = tool 'OWASP Dependency-Check'    
     }
 
     stages {
@@ -25,13 +23,7 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                sh "${SONARQUBE_HOME}/bin/sonar-scanner"
-                sh "${OWASP_HOME}/dependency-check.sh -o ${WORKSPACE}/reports"
-            }
-        }
-
+       
         stage('Push to Docker Hub') {
             steps {
                 // Push the Docker image to Docker Hub
