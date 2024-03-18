@@ -1,30 +1,44 @@
 pipeline {
     agent any
-    
+
     environment {
-        HOSTNAME = '192.168.100.32'
+        DOCKER_HUB_CREDENTIALS = 'adrian21071988-&$OpJAhIwGhtdGt'
+        DOCKER_IMAGE_NAME = 'adrian21071988/my-site-deploy'
+        SONARQUBE_HOME = tool 'SonarQube'
+        OWASP_HOME = tool 'OWASP Dependency-Check'    
     }
-    
+
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                sh 'npm install'
-                // Additional build steps if needed
+                // Checkout the GitHub repository
+                git 'https://github.com/your-username/your-repo.git'
             }
         }
+
+        stage('Build Docker Image') {
+            steps {
+                // Build the Docker image
+                script {
+                    docker.build -t my-site-deploy/dp-alpine:latest 
+                }
+            }
+        }
+
         stage('Test') {
             steps {
-                sh 'npm test'
-                // Additional test steps if needed
+                sh "${SONARQUBE_HOME}/bin/sonar-scanner"
+                sh "${OWASP_HOME}/dependency-check.sh -o ${WORKSPACE}/reports"
             }
         }
-        stage('Deploy') {
+
+        stage('Push to Docker Hub') {
             steps {
+                // Push the Docker image to Docker Hub
                 script {
-                    // Use kubectl or Kubernetes CLI to deploy the application
-                    sh "sed -i 's/192.168.100.32/$HOSTNAME/' deployment.yaml"
-                    sh 'kubectl apply -f deployment.yaml'
-                    // Additional deployment steps if needed
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
+                        docker.image(my-site-deploy).push()
+                    }
                 }
             }
         }
