@@ -22,7 +22,14 @@ pipeline {
         }
     }
 
-    stage('Push to Docker Hub') {
+    stages('Login') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
+    }
+
+    stage('Push') {
         steps {
             sh 'docker push my-site/dp-alpine:latest'
         }
