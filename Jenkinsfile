@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'docker build -t my-site/dp-alpine:latest .'
+                sh 'docker build -t my-repo/dp-alpine:latest .'
             }
         }
         stage('Login') {
@@ -23,7 +23,7 @@ pipeline {
         }
         stage('Push') {
             steps {
-                sh 'docker push my-site/dp-alpine:latest'
+                sh 'docker push my-repo/dp-alpine:latest'
             }
         }
     }
