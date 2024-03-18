@@ -4,7 +4,6 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS = credentials('adrian21071988-&$OpJAhIwGhtdGt')
     }
-
     stages {
         stage('Checkout') {
             steps {
@@ -13,7 +12,6 @@ pipeline {
             }
         }
     }
-    
     stages {
         stage('Build') {
             steps {
@@ -21,14 +19,11 @@ pipeline {
             }
         }
     }
-
-    stages('Login') {
-            steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-            }
+    stage('Login') {
+        steps {
+            sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
         }
-    
-
+    }
     stage('Push') {
         steps {
             sh 'docker push my-site/dp-alpine:latest'
