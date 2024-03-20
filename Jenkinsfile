@@ -11,9 +11,25 @@ pipeline {
                 git 'https://github.com/sadrian88/my-page.git'
             }
         }
+        stage('SonarQube analysis') {
+            steps {
+                script {
+                    def scannerHome = tool 'SonarQubeScanner'
+                    withSonarQubeEnv('SonarQubeServer') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
+            }
+        }
         stage('Build') {
             steps {
                 sh 'docker build -t my-site/dp-alpine:latest .'
+            }
+        }
+        stage('Test') {
+            steps {
+                //Run tests for my application
+                sh 'npm test'
             }
         }
         stage('Login') {
